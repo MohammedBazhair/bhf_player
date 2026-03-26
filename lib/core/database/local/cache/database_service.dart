@@ -1,0 +1,76 @@
+import 'dart:async';
+import 'package:bhf_player/core/utils/app_constants/constants_exports.dart';
+import 'package:bhf_player/generated/l10n.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+class DatabaseService {
+  Database? _db;
+
+  Database get db {
+    if (_db == null) throw Exception(S.current.database_not_initialized);
+    return _db!;
+  }
+
+  Future<void> init() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, DbConstants.databaseName);
+
+    _db = await openDatabase(
+      path,
+      version: DbConstants.dbVersion,
+      onCreate: _onCreate,
+    );
+  }
+
+  FutureOr<void> _onCreate(Database db, int version) async {
+    await db.execute(Queries.createTableCourses);
+  }
+
+  Future<int> insertRow(
+    Map<String, dynamic> data, {
+    String table = DbConstants.tableName,
+  }) async {
+    return await db.insert(
+      table,
+      data,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getAllData({
+    String table = DbConstants.tableName,
+  }) async {
+    return await db.query(table);
+  }
+
+  Future<int> updateRow(
+    int? id,
+    Map<String, dynamic> data, {
+    String table = DbConstants.tableName,
+  }) async {
+    return await db.update(
+      table,
+      data,
+      where: "${DbColumns.id} = ?",
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteRow(int? id, {String table = DbConstants.tableName}) async {
+    return await db.delete(
+      table,
+      where: "${DbColumns.id} = ?",
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> restTable({String table = DbConstants.tableName}) async {
+    await db.delete(table);
+    await db.execute(Queries.resetTable(table));
+  }
+
+  Future<void> close() async {
+    await db.close();
+  }
+}

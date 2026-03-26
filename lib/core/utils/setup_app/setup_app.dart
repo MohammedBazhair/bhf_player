@@ -1,0 +1,26 @@
+import 'package:bhf_player/core/utils/helpers_functions/cache/cache_utils.dart';
+import 'package:bhf_player/features/db_backup/inject.dart';
+import 'package:bhf_player/features/device_security/injection.dart';
+
+import 'package:bhf_player/features/video_info/video_info_exports.dart';
+import 'package:flutter/material.dart';
+import 'package:media_kit/media_kit.dart';
+import 'setup_app_window/setup_app_window.dart';
+import 'service_locator/service_locator.dart';
+import 'setup_database/setup_database.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+Future<void> setupApp() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await setupScreenWindow();
+  MediaKit.ensureInitialized();
+  await setupDatabases();
+  await injectUserServicesLocator();
+  injectVideoInfo();
+  injectBackupDb();
+  injectDeviceSecurity();
+  await clearCacheIfNeeded();
+  FlutterNativeSplash.remove();
+}

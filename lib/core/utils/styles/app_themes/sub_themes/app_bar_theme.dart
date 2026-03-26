@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+import 'package:bhf_player/core/utils/styles/app_colors/dark_colors.dart';
+import 'package:bhf_player/core/utils/styles/app_colors/light_colors.dart';
+import 'package:bhf_player/core/utils/styles/app_sizes/app_sizes.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class AppAppBarTheme {
+  AppAppBarTheme._();
+  static AppBarTheme get dark => AppBarTheme(
+    backgroundColor: DarkColors.appBar,
+    centerTitle: true,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor: DarkColors.appBar, // مهم مع edgeToEdge
+      statusBarIconBrightness: Brightness.light, // للأندرويد
+      statusBarBrightness: Brightness.light,
+    ),
+    titleTextStyle: TextStyle(
+      fontSize: 20.spMin,
+      color: DarkColors.onPrimary,
+      fontWeight: FontWeight.bold,
+    ),
+    shape: const Border(
+      bottom: BorderSide(color: DarkColors.border, width: .3),
+    ),
+    scrolledUnderElevation: 0,
+    iconTheme: const IconThemeData(color: DarkColors.icon, size: AppSizes.icon),
+    actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
+  );
+
+  static AppBarTheme get light => AppBarTheme(
+    backgroundColor: LightColors.appBar,
+    centerTitle: true,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor: LightColors.appBar, // مهم مع edgeToEdge
+      statusBarIconBrightness: Brightness.dark, // للأندرويد
+      statusBarBrightness: Brightness.dark,
+    ),
+    titleTextStyle: TextStyle(
+      fontSize: 20.spMin,
+      color: const Color(0xFF03185B),
+      fontWeight: FontWeight.bold,
+    ),
+    shape: const Border(
+      bottom: BorderSide(color: LightColors.borderAppBar, width: .3),
+    ),
+    scrolledUnderElevation: 0,
+    iconTheme: const IconThemeData(
+      color: Color(0xFF121212),
+      size: AppSizes.icon,
+    ),
+    actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
+  );
+}
