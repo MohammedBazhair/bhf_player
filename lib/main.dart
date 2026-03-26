@@ -6,7 +6,6 @@ import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
 import 'core/presentation/screens/bhf_player_screen.dart';
 import 'core/utils/setup_app/responsive_initializer/responsive_initializer.dart';
 import 'core/utils/setup_app/setup_app.dart';
@@ -37,6 +36,8 @@ Future<void> _runApp() async {
 }
 
 // / Checks if the device is secure (root/jailbreak/emulator).
+
+/// Checks if the device is secure (root/jailbreak/emulator).
 Future<String?> _checkSecurity() async {
   final deviceStatus = await GetIt.I<GetDeviceSecurityStatusUseCase>().call();
   final securityChecker = SecurityChecker(deviceStatus);
